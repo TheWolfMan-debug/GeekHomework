@@ -1,0 +1,12 @@
+{
+  "groups": [
+    {
+      "name": "spring.datasource",
+      "type": "javax.sql.DataSource",
+      "sourceType": "com.wolfman.travel.config.dataConfig.DruidConfig",
+      "sourceMethod": "druid()"
+    }
+  ],
+  "properties": [],
+  "hints": []
+}

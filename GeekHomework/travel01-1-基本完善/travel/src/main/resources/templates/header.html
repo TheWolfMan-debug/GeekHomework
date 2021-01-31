@@ -1,0 +1,126 @@
+<!DOCTYPE html>
+<html lang="en" xmlns:th="http://www.thymeleaf.org">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport"
+          content="width=device-width, user-scalable=no, initial-scale=1.0, maximum-scale=1.0, minimum-scale=1.0">
+    <meta http-equiv="X-UA-Compatible" content="ie=edge">
+    <title>Document</title>
+    <script src="../static/js/getParameter.js" th:src="@{/js/getParameter.js}"></script>
+
+</head>
+<body>
+
+
+<div id="headerDiv">
+    <!-- 头部 start -->
+
+    <script>
+
+        $(function () {
+            //查询用户信息
+            $.get("/user/findOne", {}, function (data) {
+                if (data.username != null) {
+                    let msg = "欢迎，" + data.username;
+                    $("#span_username").html(msg);
+                }
+            });
+
+            //查询分类数据
+            $.get("/category/findAll", {}, function (data) {
+                //[{cid:1,cname:国内游},{},{}]
+                let lis = '<li class="nav-active"><a href="/user/index">首页</a></li>';
+                //遍历数组,拼接字符串(<li>)
+                for (let i = 0; i < data.length; i++) {
+
+                    // let li = '<li><a href="route_list.html?cid='+data[i].cid+'">'+data[i].cname+'</a></li>';
+                    let li = '<li><a href="/user/routeList?currentPage=&cid=' + data[i].cid + '&rName=">' + data[i].cname + '</a></li>';
+                    lis += li;
+                }
+
+                lis += '<li><a href="/user/favoriteRank">收藏排行榜</a></li>';
+
+                //将lis字符串，设置到ul的html内容中
+                $("#category").html(lis);
+            });
+
+
+            //给搜索按钮绑定单击事件，获取搜索输入框的内容
+            $("#search-button").click(function () {
+                //线路名称
+                let rName = $("#search_input").val();
+
+                let cid = getParameter("cid");
+
+                location.href = "/user/routeList?currentPage=&cid=" + cid + "&rName=" + rName;
+
+            });
+
+
+        });
+
+    </script>
+
+    <header id="header">
+        <div class="top_banner">
+            <img src="../static/images/top_banner.jpg" alt="" th:src="@{/images/top_banner.jpg}">
+        </div>
+        <div class="shortcut">
+            <!-- 未登录状态  -->
+            <div class="login_out">
+                <a href="login.html" th:href="@{/user/login}">登录</a>
+                <a href="register.html" th:href="@{/user/register}">注册</a>
+            </div>
+            <!-- 登录状态  -->
+            <div class="login">
+
+                <span id="span_username"></span>
+                <a href="#" class="collection" th:href="@{/user/myFavorite(rName)}">我的收藏</a>
+                <a href="javascript:location.href='user/exit';" th:href="@{/user/exit}">退出</a>
+            </div>
+        </div>
+        <div class="header_wrap">
+            <div class="topbar">
+                <div class="logo">
+                    <a href="/"><img src="../static/images/logo.jpg" alt="" th:src="@{/images/logo.jpg}"></a>
+                </div>
+                <div class="search">
+                    <input name="" id="search_input" type="text" placeholder="请输入路线名称" class="search_input"
+                           autocomplete="off">
+                    <button id="search-button" class="search-button">搜索</button>
+                </div>
+                <div class="hottel">
+                    <div class="hot_pic">
+                        <img src="../static/images/hot_tel.jpg" alt="" th:src="@{/images/hot_tel.jpg}">
+                    </div>
+                    <div class="hot_tel">
+                        <p class="hot_time">客服热线(9:00-6:00)</p>
+                        <p class="hot_num">400-618-9090</p>
+                    </div>
+                </div>
+            </div>
+        </div>
+    </header>
+    <!-- 头部 end -->
+    <!-- 首页导航 -->
+    <div class="navitem">
+        <ul id="category" class="nav">
+            <!--         <li class="nav-active"><a href="index.html">首页</a></li>-->
+            <!--         <li><a href="routeList.html">门票</a></li>-->
+            <!--         <li><a href="routeList.html">酒店</a></li>-->
+            <!--         <li><a href="routeList.html">香港车票</a></li>-->
+            <!--         <li><a href="routeList.html">出境游</a></li>-->
+            <!--         <li><a href="routeList.html">国内游</a></li>-->
+            <!--         <li><a href="routeList.html">港澳游</a></li>-->
+            <!--         <li><a href="routeList.html">抱团定制</a></li>-->
+            <!--         <li><a href="routeList.html">全球自由行</a></li>-->
+            <!--         <li><a href="favoriteRank.html">收藏排行榜</a></li>-->
+        </ul>
+    </div>
+
+
+</div>
+
+</body>
+</html>
+
